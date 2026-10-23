@@ -1,0 +1,10 @@
+# Atskaites ID: RVT-4417
+# 1. ceļš: Get-Service
+$laiks1 = Measure-Command { $a = Get-Service -Name Spooler }
+# 2. ceļš: CIM / WMI klase Win32_Service
+$laiks2 = Measure-Command { $b = Get-CimInstance -ClassName Win32_Service -Filter "Name = 'Spooler'" }
+
+Write-Output "1. ceļš (Get-Service): serviss $($a.Name), statuss $($a.Status)"
+Write-Output "2. ceļš (Get-CimInstance Win32_Service): serviss $($b.Name), statuss $($b.State)"
+Write-Output ("Get-Service laiks: {0:N2} ms" -f $laiks1.TotalMilliseconds)
+Write-Output ("Get-CimInstance laiks: {0:N2} ms" -f $laiks2.TotalMilliseconds)
