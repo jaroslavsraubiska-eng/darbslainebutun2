@@ -1,0 +1,9 @@
+Administratora tiesības vajadzēja tikai 4. uzdevumam, kad servisus palaiž pa īstam (ar -WhatIf nevajag). 9. uzdevumu palaidu parastajā logā bez administratora. Pārējie skripti strādāja ar parastām tiesībām.
+3.uzdevums
+Skripts skaita tikai servisus ar statusu Running un Stopped. Mans rezultāts: darbojas [X], apturēti [Y], summa [X+Y]. Kopā datorā ir [Z] servisu. Summa [sakrīt / nesakrīt]. Ja nesakrīt, tad atšķirība ir tāpēc, ka ir servisi ar citu statusu, piemēram Paused vai StartPending, un tos skripts neskaita.
+5.uzdevums
+Pēdējo 48 stundu laikā sistēmas žurnālā bija [N] kļūdu. Visbiežākais avots bija [avots], [K] reizes. No tā es secinu, ka [tavs secinājums: piem., dators strādā normāli un daži kļūdu ieraksti dienā ir parasta lieta / vai arī ir kāda problēma ar šo avotu, jo tas atkārtojas daudz].
+6.uzdevums
+Izvēlējos draiveri [nosaukums no csv]. Pēc DeviceName tas pieder ierīcei [ierīces nosaukums]. To pārbaudīju arī Device Manager.
+9.uzdevums
+Ar komandu Get-Process -IncludeUserName bez administratora tiesībām man iznāca kļūda (precīzs teksts ir failā izvade.txt). Tātad ar to, ko apguvām nodarbībās, lietotāja vārdu bez administratora nevar dabūt. Pietrūkst vai nu administratora tiesību, vai citas komandas, piemēram Get-CimInstance Win32_Process kopā ar metodi GetOwner, ko mēs nodarbībās neizmantojām.
