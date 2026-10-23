@@ -1,0 +1,13 @@
+# Atskaites ID: RVT-4417
+$csv = Join-Path -Path $PSScriptRoot -ChildPath 'draiveri.csv'
+
+$draiveri = Get-CimInstance -ClassName Win32_PnPSignedDriver |
+    Where-Object { $_.DriverProviderName -and $_.DriverProviderName -notlike 'Microsoft*' } |
+    Select-Object -Property DeviceName, DriverProviderName, Manufacturer, DriverVersion, DriverDate, DeviceClass, InfName |
+    Sort-Object -Property DriverProviderName, DeviceName
+
+$draiveri | Export-Csv -Path $csv -NoTypeInformation -Encoding UTF8
+
+$rindas = @(Get-Content -Path $csv).Count
+Write-Output "Rindu skaits CSV failā (kopā ar galvenes rindu): $rindas"
+$draiveri | Format-Table -AutoSize
