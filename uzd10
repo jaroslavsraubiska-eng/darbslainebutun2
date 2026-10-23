@@ -1,0 +1,19 @@
+# Atskaites ID: RVT-4417
+# Skaitļi no 1., 3., 5. un 7. uzdevuma, nolasīti no jauna
+$procesi = @(Get-Process).Count
+$darbojas = @(Get-Service | Where-Object { $_.Status -eq 'Running' }).Count
+$aptureti = @(Get-Service | Where-Object { $_.Status -eq 'Stopped' }).Count
+
+$kludas = 0
+try {
+    $kludas = @(Get-WinEvent -FilterHashtable @{ LogName = 'System'; Level = 2; StartTime = (Get-Date).AddHours(-48) } -ErrorAction Stop).Count
+}
+catch { }
+
+Write-Output "Procesu skaits: $procesi"
+Write-Output "Darbojošos servisu skaits: $darbojas"
+Write-Output "Apturēto servisu skaits: $aptureti"
+Write-Output "Kļūdu ierakstu skaits sistēmas žurnālā pēdējo 48 stundu laikā: $kludas"
+foreach ($disks in (Get-CimInstance -ClassName Win32_LogicalDisk -Filter 'DriveType = 3')) {
+    Write-Output "Brīvā vieta diskā $($disks.DeviceID): $([math]::Round($disks.FreeSpace / 1GB, 1)) GB"
+}
