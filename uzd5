@@ -1,23 +1,13 @@
-# Atskaites ID: RVT-4417
-# Laika filtrs: metode AddHours atrasta ar (Get-Date) | Get-Member
 $sakums = (Get-Date).AddHours(-48)
 
-$ieraksti = @()
-try {
-    $ieraksti = @(Get-WinEvent -FilterHashtable @{ LogName = 'System'; Level = 2; StartTime = $sakums } -ErrorAction Stop)
-}
-catch {
-    if ($_.FullyQualifiedErrorId -notlike 'NoMatchingEventsFound*') {
-        Write-Output "Kļūda, nolasot žurnālu: $($_.Exception.Message)"
-    }
-}
+$kludas = Get-WinEvent -FilterHashtable @{LogName = "System"; Level = 2; StartTime = $sakums} -ErrorAction SilentlyContinue
 
-Write-Output "Kļūdu ierakstu skaits sistēmas žurnālā pēdējo 48 stundu laikā: $($ieraksti.Count)"
-
-if ($ieraksti.Count -gt 0) {
-    $top = $ieraksti | Group-Object -Property ProviderName | Sort-Object -Property Count -Descending | Select-Object -First 1
-    Write-Output "Visbiežākais avots: $($top.Name) ($($top.Count) reizes)"
+if ($null -eq $kludas) {
+    Write-Output "Kļūdu ierakstu skaits pēdējo 48 stundu laikā: 0"
 }
 else {
-    Write-Output "Visbiežākais avots: nav (kļūdu ierakstu nav)"
+    $skaits = @($kludas).Count
+    $top = $kludas | Group-Object ProviderName | Sort-Object Count -Descending | Select-Object -First 1
+    Write-Output "Kļūdu ierakstu skaits pēdējo 48 stundu laikā: $skaits"
+    Write-Output "Visbiežākais avots: $($top.Name), reizes: $($top.Count)"
 }
