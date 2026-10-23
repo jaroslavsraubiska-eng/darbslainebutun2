@@ -1,0 +1,26 @@
+# Atskaites ID: RVT-4417
+[CmdletBinding(SupportsShouldProcess = $true)]
+param()
+
+$servisi = @(Get-Service | Where-Object { $_.StartType -eq 'Automatic' -and $_.Status -eq 'Stopped' })
+
+if ($servisi.Count -eq 0) {
+    Write-Output "Servisu ar palaišanas veidu Automatic un statusu Stopped nav. Atrasto servisu skaits: 0"
+}
+else {
+    Write-Output "Atrasto servisu skaits: $($servisi.Count)"
+    foreach ($s in $servisi) {
+        if ($WhatIfPreference) {
+            Write-Output "WhatIf: serviss '$($s.Name)' ($($s.DisplayName)) tiktu palaists."
+        }
+        if ($PSCmdlet.ShouldProcess($s.Name, 'Palaist servisu')) {
+            try {
+                Start-Service -InputObject $s -ErrorAction Stop
+                Write-Output "Palaists: $($s.Name)"
+            }
+            catch {
+                Write-Output "Neizdevās palaist '$($s.Name)': $($_.Exception.Message)"
+            }
+        }
+    }
+}
