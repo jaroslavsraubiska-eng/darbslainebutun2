@@ -1,0 +1,20 @@
+# SKAIDROJUMS
+
+## Administratora tiesības
+- **4. uzdevums** – servisu palaišanai (`Start-Service`) vajag administratora tiesības; ar `-WhatIf` nevajag.
+- **9. uzdevums** – paredzēts palaist **bez** administratora tiesībām.
+- Pārējie skripti darbojas ar parasta lietotāja tiesībām.
+
+## 3. uzdevums – vai summa sakrīt ar kopējo servisu skaitu?
+Skripts saskaita tikai statusus `Running` un `Stopped`. Summa sakrīt ar kopējo servisu skaitu tikai tad, ja nav servisu citos statusos (`Paused`, `StartPending`, `StopPending`, `ContinuePending`, `PausePending`). Ja summa nesakrīt, starpība ir tieši šādi servisi.
+**Mans rezultāts:** [ierakstīt savu skaitli un secinājumu pēc palaišanas]
+
+## 5. uzdevums – ko es secinu par savu datoru
+[ierakstīt pēc palaišanas: kāds ir kļūdu skaits, kurš avots visbiežākais un ko tas liecina – piem., dažas kļūdas dienā ir normāli; ļoti daudz atkārtotu kļūdu no viena avota norāda uz konkrētu problēmu (draiveris, disks, serviss)]
+
+## 6. uzdevums – izvēlētais draiveris
+Draiveris: [nosaukums no draiveri.csv]
+Ierīce, kurai tas pieder: [DeviceName no CSV vai Device Manager]
+
+## 9. uzdevums – vai ar apgūtajām komandām var izdarīt?
+`Get-Process -IncludeUserName` bez administratora tiesībām atgriež kļūdu, ka parametram vajadzīgas paaugstinātas tiesības (precīzs teksts ir izvade.txt). Tātad trūkst vai nu administratora tiesību, vai cita metode, kas procesa īpašnieku nolasa bez tām, piemēram, `Get-CimInstance Win32_Process` kopā ar `Invoke-CimMethod -MethodName GetOwner`.
