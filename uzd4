@@ -1,26 +1,19 @@
-# Atskaites ID: RVT-4417
-[CmdletBinding(SupportsShouldProcess = $true)]
-param()
+param([switch]$WhatIf)
 
-$servisi = @(Get-Service | Where-Object { $_.StartType -eq 'Automatic' -and $_.Status -eq 'Stopped' })
+$servisi = Get-Service | Where-Object { $_.StartType -eq "Automatic" -and $_.Status -eq "Stopped" }
 
-if ($servisi.Count -eq 0) {
-    Write-Output "Servisu ar palaišanas veidu Automatic un statusu Stopped nav. Atrasto servisu skaits: 0"
+if (@($servisi).Count -eq 0) {
+    Write-Output "Tādu servisu nav, skaits: 0"
 }
 else {
-    Write-Output "Atrasto servisu skaits: $($servisi.Count)"
+    Write-Output "Atrasti servisi: $(@($servisi).Count)"
     foreach ($s in $servisi) {
-        if ($WhatIfPreference) {
-            Write-Output "WhatIf: serviss '$($s.Name)' ($($s.DisplayName)) tiktu palaists."
+        if ($WhatIf) {
+            Write-Output "WhatIf: tiktu palaists serviss $($s.Name)"
         }
-        if ($PSCmdlet.ShouldProcess($s.Name, 'Palaist servisu')) {
-            try {
-                Start-Service -InputObject $s -ErrorAction Stop
-                Write-Output "Palaists: $($s.Name)"
-            }
-            catch {
-                Write-Output "Neizdevās palaist '$($s.Name)': $($_.Exception.Message)"
-            }
+        else {
+            Start-Service -Name $s.Name -ErrorAction SilentlyContinue
+            Write-Output "Mēģināju palaist: $($s.Name), statuss tagad: $((Get-Service $s.Name).Status)"
         }
     }
 }
