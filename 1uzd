@@ -1,0 +1,11 @@
+# Atskaites ID: RVT-4417
+$os = Get-CimInstance -ClassName Win32_OperatingSystem
+
+[pscustomobject][ordered]@{
+    'Datora nosaukums'            = $env:COMPUTERNAME
+    'Operētājsistēmas nosaukums'  = $os.Caption
+    'Būvējuma numurs'             = $os.BuildNumber
+    'PowerShell versija'          = $PSVersionTable.PSVersion.ToString()
+    'Pašreizējais datums un laiks' = (Get-Date -Format 'yyyy-MM-dd HH:mm:ss')
+    'Darbojošos procesu skaits'   = @(Get-Process).Count
+} | Format-List
