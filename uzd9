@@ -1,0 +1,9 @@
+# Atskaites ID: RVT-4417
+try {
+    Get-Process -IncludeUserName -ErrorAction Stop |
+        Select-Object -Property Name, Id, UserName |
+        Format-Table -AutoSize
+}
+catch {
+    Write-Output "Sistēmas atbilde (kļūda): $($_.Exception.Message)"
+}
