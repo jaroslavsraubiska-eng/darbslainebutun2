@@ -1,10 +1,3 @@
-# Atskaites ID: RVT-4417
-# Atmiņas lauks atrasts ar: Get-Process | Get-Member  ->  WorkingSet64 (baiti)
-Get-Process |
-    Sort-Object -Property WorkingSet64 -Descending |
-    Select-Object -First 10 |
-    Sort-Object -Property WorkingSet64 |
-    Select-Object -Property @{ Name = 'Nosaukums'; Expression = { $_.Name } },
-                            @{ Name = 'Id'; Expression = { $_.Id } },
-                            @{ Name = 'Atmiņa (MB)'; Expression = { '{0:F1}' -f ($_.WorkingSet64 / 1MB) } } |
-    Format-Table -AutoSize
+Get-Process | Sort-Object WorkingSet64 -Descending | Select-Object -First 10 |
+    Sort-Object WorkingSet64 |
+    Select-Object Name, Id, @{Name = "Atmiņa MB"; Expression = { "{0:F1}" -f ($_.WorkingSet64 / 1MB) }}
